@@ -1,0 +1,76 @@
+﻿@using MyFirstWebAssemblyProject.Client.Shared
+<h3>AddToCart</h3>
+Selected Product in the AddToCart Component : @SelectedProduct
+
+<div class="container">
+    <div class="card bg-warning" style="width:18rem;">
+        <img src=@SelectedProduct.ImageUrl alt="@SelectedProduct.ProductName" class="img-fluid card-img-top"/>
+        <div class="card-body">
+            <h3 class="card-title">@SelectedProduct.ProductName</h3>
+            <h4 class="card-text">Price : Rs. @SelectedProduct.Price</h4>
+            <h4 class="card-text">Quantity In hand : @SelectedProduct.Quantity</h4>
+            <input type="button" class="btn btn-primary" 
+                   disabled=@((QuantitySelected <=1)?true:false)
+                   value="-" @onclick=@(()=> { ChangeQuantityEventHandler("dec");}) />
+            <span>@QuantitySelected</span>
+            <input type="button" class="btn btn-primary"
+                   disabled=@((QuantitySelected>=SelectedProduct.Quantity)?true:false)
+                   value="+" @onclick=@(()=> { ChangeQuantityEventHandler("inc");}) />
+            <br/>
+            <input type="button" value="Confirm Add To Cart" class="btn btn-outline-primary" @onclick="ConfirmAddToCartEventHandler"/>
+            <input type="button" value="Cancel" class="btn btn-outline-danger" @onclick="onAddToCartCancel"/>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Products SelectedProduct { get; set; }
+
+    [Parameter]
+    public EventCallback onAddToCartCancel{ get;set;}
+
+    [Parameter]
+    public EventCallback<Cart> onAddToCartConfirm{ get;set; }
+
+    public int QuantitySelected { get; set; } = 1;
+
+    public void ChangeQuantityEventHandler(string s1)
+    {
+        if (s1=="dec" && QuantitySelected >1)
+            QuantitySelected--;
+        if(s1=="inc" && QuantitySelected < SelectedProduct.Quantity)
+        {
+            QuantitySelected++;
+        }
+
+    }
+    public void ConfirmAddToCartEventHandler()
+    {
+        MyFirstWebAssemblyProject.Client.Shared.Cart cartObj = new MyFirstWebAssemblyProject.Client.Shared.Cart(SelectedProduct.ProductId, SelectedProduct.ProductName, SelectedProduct.Price, SelectedProduct.Quantity, SelectedProduct.Description, SelectedProduct.ImageUrl, QuantitySelected);
+        // send cartObj from AddToCart to ProductDetails
+        // events and eventhandlers
+        onAddToCartConfirm.InvokeAsync(cartObj);
+    }
+
+        public override async Task SetParametersAsync(ParameterView parameters)
+        {
+        // called the first time my component renders
+        // also be called when the parent re renders
+        //alsoe be called whenever the parameters changes 
+        Console.WriteLine("SetParameterAsyn called");
+        // check if parameters.selectedProduct != selectedProduct then set qunatitySelected=1
+        
+        if(parameters.TryGetValue<Products>(nameof(SelectedProduct),out Products newProduct))
+        {
+            if(newProduct != null && SelectedProduct !=null)
+                if(newProduct.ProductId != SelectedProduct.ProductId)
+                {
+                    QuantitySelected = 1;
+                }
+        }
+        await base.SetParametersAsync(parameters);
+
+    }
+
+}
