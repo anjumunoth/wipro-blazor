@@ -1,0 +1,18 @@
+﻿@page "/parent"
+
+<h3>Parent</h3>
+<Child SendControlToParent="SendControlToParentEventhandler" SendDataToParent=SendDataToParentEventhandler >
+
+</Child>
+
+@code {
+    public void SendControlToParentEventhandler()
+    {
+        Console.WriteLine("Event for Control captured in the parent component");
+    }
+
+    public void SendDataToParentEventhandler(string s1)
+    {
+        Console.WriteLine("Event for Data captured in the parent component"+s1);
+    }
+}

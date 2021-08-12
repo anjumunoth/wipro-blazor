@@ -1,0 +1,97 @@
+﻿
+<h3>ProductDetails</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Image
+            </th>
+            <th>
+                ProductId
+            </th>
+            <th>
+                Product Name
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Quantity in Hand
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+    @foreach (Products item in @ProductList)
+    {
+        <tr>
+            <td>
+                <img src=@item.ImageUrl alt=@item.Description />
+            </td>
+            <td>
+                @item.ProductId
+            </td>
+            <td>
+                @item.ProductName
+            </td>
+            <td>
+                @item.Price
+            </td>
+            <td>
+                @item.Quantity
+            </td>
+            <td>
+                <input type="button" class ="btn btn-primary text-white" value="Add to Cart" @onclick="()=> { AddToCartEventHandler(item); }"/>
+            </td>
+        </tr>
+    }
+</table>
+
+@if(ShowAddToCartComponent)
+            {
+                <AddToCart SelectedProduct=@SelectedProduct onAddToCartConfirm=  "AddToCartConfirmEventHandler" onAddToCartCancel="CancelEventHandler"></AddToCart>
+            }
+@code {
+
+    [Parameter]
+    public List<Products> ProductList{ get; set; }
+
+    [Parameter]
+    public EventCallback<Cart> onSendDataFromPDTohome { get; set; }
+
+    public bool ShowAddToCartComponent { get; set; } = false;
+
+    public Products SelectedProduct=new Products();
+    public void CancelEventHandler()
+    {
+        Console.WriteLine("Event triggered and captured in the parent component");
+        ShowAddToCartComponent = false;
+    }
+    public void AddToCartConfirmEventHandler(Cart cartObj)
+    {
+        Console.WriteLine("Add to cart Confirm event triggered and captured in the parent component");
+        Console.WriteLine(cartObj);
+        onSendDataFromPDTohome.InvokeAsync(cartObj);
+        ShowAddToCartComponent = false;
+    }
+    public void AddToCartEventHandler(Products selectedProduct)
+    {
+        Console.WriteLine("You clicked the button" +selectedProduct.ProductName);
+        ShowAddToCartComponent = true;
+        SelectedProduct = selectedProduct;
+
+        //List<string> l1 = new List<string>();
+        //l1.Add("singing");
+        //l1.Add("dancing");
+        //l1.Add("trekking");
+        //l1.Add("gardening");
+        //l1.Add("reading");
+        ////int pos=l1.FindIndex(item => (item == "dancing"));
+        //int pos = l1.FindIndex(item => { return (item == "dancing"); });
+        //Console.WriteLine(pos);//1
+
+
+
+    }
+}

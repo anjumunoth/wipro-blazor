@@ -1,0 +1,23 @@
+﻿<h3>Cart Component</h3>
+<div class="container-fluid">
+    <div class="card-deck">
+        @foreach (Cart item in CartList)
+        {
+            <div class="card bg-warning" style="width:18rem;">
+                <img src=@item.ImageUrl alt="@item.ProductName" class="img-fluid card-img-top" />
+                <div class="card-body">
+                    <h3 class="card-title">@item.ProductName</h3>
+                    <h4 class="card-text">Price : Rs. @item.Price</h4>
+                    <h4 class="card-text">Quantity Selected : @item.QuantityPurchased</h4>
+
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public List<Cart> CartList { get; set; }
+
+}

@@ -1,0 +1,28 @@
+﻿@page "/lifecycle" 
+
+<h3>LifecycleExample</h3>
+<input type="text" placeholder="Enter the first name" @bind="FirstName" />
+<input type="text" placeholder="Enter the last name" @bind="LastName" />
+
+<ChildLifecycleExample FirstName="@FirstName" LastName="@LastName"></ChildLifecycleExample>
+
+@code {
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    protected override void OnInitialized()
+    {
+        Console.WriteLine("On Intialised called");
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine("On Intialised Async called");
+
+    }
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        Console.WriteLine("Set parameters Async called");
+        await base.SetParametersAsync(parameters);
+
+    }
+}

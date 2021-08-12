@@ -1,0 +1,40 @@
+﻿<h3>ChildLifecycleExample</h3>
+@FullName
+Wrong Full name : @WrongFullname
+
+
+@code {
+    [Parameter]
+    public string FirstName { get; set; }
+    [Parameter]
+    public string LastName { get; set; }
+
+    public string FullName { get; set; }
+    public string WrongFullname { get; set; }
+
+    // setParamtersAsync
+    // OnParametersSet
+    protected override Task OnParametersSetAsync()
+    {
+        Console.WriteLine("On parameters set async called ");
+        return base.OnParametersSetAsync();
+    }
+
+    public override Task SetParametersAsync(ParameterView parameters)
+    {
+        WrongFullname = FirstName + LastName;// populate with the old values before the parameter changes
+        Console.WriteLine("On set parameters  async called ");
+        return base.SetParametersAsync(parameters);// here only the values from the parent are assigned to the child
+    }
+    protected override void OnParametersSet()
+    {
+        // called after the new parameters have been set to the parameters
+
+        FullName = FirstName + LastName;
+        Console.WriteLine("On parameters set called ");
+    }
+
+
+
+
+}

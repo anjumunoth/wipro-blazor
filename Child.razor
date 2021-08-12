@@ -1,0 +1,21 @@
+﻿<h3>Child</h3>
+<input type="text" @bind="Username"/>
+<input type="button" value="send username" @onclick="SendUsernameEventHandler"/>
+<br />
+<input type="button" value="Send control" @onclick="SendControlToParent"/>
+
+@code {
+    public string Username { get; set; }
+    [Parameter]
+    public EventCallback SendControlToParent { get; set; }
+
+    [Parameter]
+    public EventCallback<string> SendDataToParent { get; set; }
+
+    public void SendUsernameEventHandler()
+    {
+        // pass the username
+        SendDataToParent.InvokeAsync(Username);
+
+    }
+}

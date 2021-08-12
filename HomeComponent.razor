@@ -1,0 +1,44 @@
+﻿@page "/products"
+<h1>Parent Component</h1>
+<div class="container">
+    <div class="col-3 offset-9">
+        <input type="button" value="Cart" @onclick="ShowCartEventHandler" class="btn btn-primary" />
+    </div>
+</div>
+@if (!ShowCart)
+{
+    <ProductDetails ProductList=@ProductList onSendDataFromPDTohome="onSendDataFromPDTohomeEventHandler"></ProductDetails>
+}
+else
+{
+    <CartComponent CartList="@CartList"></CartComponent>
+}
+
+@code {
+    public List<Products> ProductList;
+    public List<Cart> CartList;
+
+    public bool ShowCart { get; set; } = false;
+    protected override void OnInitialized()
+    {
+        ProductList = new List<Products>();
+        ProductList.Add(new Products(101, "Huawei Mate 40 ", 12345, 12, "Huawei Mate 40 mobile", "images/HuaweiMate40.jpg"));
+        ProductList.Add(new Products(102, "Apple Iphone 12 Pro ", 123456, 7, "Apple Iphone 12 Pro mobile", "images/Iphone12Pro.jpg"));
+        ProductList.Add(new Products(103, "Samsung note 20 ",56000, 5, "Samsung note 20 mobile", "images/SamsungGalaxy20.jpg"));
+        ProductList.Add(new Products(104, "Vivo V 20 ", 34000, 10, "Vivo V 20 mobile", "images/VivoV20.jpg"));
+        ProductList.Add(new Products(105, "Oppo A 31",24000, 2, "Oppo A 31mobile", "images/OppoA31.jpg"));
+        CartList = new List<Cart>();
+    }
+
+    public void ShowCartEventHandler()
+    {
+        ShowCart = true;
+    }
+    public void onSendDataFromPDTohomeEventHandler(Cart cartObj)
+    {
+        Console.WriteLine("Add to cart confirm event triggered and captured in the Home Component : " + cartObj);
+        CartList.Add(cartObj);
+
+
+    }
+}

@@ -1,0 +1,81 @@
+﻿@page "/mycomponent"
+
+<h3>MyComponent</h3>
+<h1 style="background-color:aqua;color:blue;" id="heading1"> Welcome to Blazor </h1>
+<h1 class="bg-primary text-warning"> Welcome to bootstrap </h1>
+<h1> Company name :@CompanyName</h1>
+<p> Bonus : @(salary * .1)</p>
+<p> Addition : @(2+2)</p>
+<p> Employee name :@(ConvertToUpper("sara"))</p>
+@if(num1 %2 ==0)
+            {
+                <p> @num1 is an even number</p>
+}
+else
+            {
+                <p> @num1 is an odd number</p>
+            }
+<ul>
+    @foreach (var str in hobbies)
+        {
+        <li>@str</li>
+    }
+</ul>
+
+<img src="images/flower.jpg"  alt="Image of a flower" />
+
+<input type="text" placeholder="Enter your name" @oninput="NameInputEventhandler" @onchange="NameChangeEventHandler" />
+
+<input type="button" value="Get Name" @onclick="GetNameEventHandler" />
+
+<input type="text" placeholder="Enter the employee Id" @bind="EmployeeId"/>
+
+<input type="text" placeholder="Enter the department Id" value=@DepartmentId @onchange="DepartmentIdChangeHandler"/>
+<input type="text" placeholder="Enter the department Name" @bind-value="DepartmentName" @bind-value:event="oninput" />
+<input type="datetime"  @bind-value="DateOfBirth" @bind-value:format="yyyy-MM-dd" />
+<h1>Employee Information</h1>
+<h3> Employee Id: @EmployeeId </h3>
+<h3> Department Id: @DepartmentId </h3>
+<h3> Department Name: @DepartmentName</h3>
+<h3> Date of Birth : @DateOfBirth</h3>
+Welcome @username
+
+
+
+@code {
+    public DateTime DateOfBirth { get; set; }
+    public int EmployeeId { get; set; } = 1;
+    public string DepartmentId { get; set; } = "";
+    public string DepartmentName { get; set; } = "";
+    public string CompanyName = "Wipro Technologies LTD";
+    public float salary = 34567.6789f;
+    public string username = "";
+
+    public string ConvertToUpper(string s1)
+    {
+        return s1.ToUpper();
+    }
+    public int num1 = 12;
+    public string[] hobbies = new string[] { "singing", "dancing", "cooking", "trekking" };
+
+    public void GetNameEventHandler()
+    {
+        Console.WriteLine("Button clicked");
+    }
+
+    public void NameInputEventhandler(ChangeEventArgs e)
+    {
+
+        Console.WriteLine("Input Event triggered"+e.Value);
+        username = e.Value.ToString();
+    }
+    public void DepartmentIdChangeHandler(ChangeEventArgs e)
+    {
+        DepartmentId = e.Value.ToString();
+    }
+
+    public void NameChangeEventHandler(ChangeEventArgs e)
+    {
+        Console.WriteLine("Change event triggered "+e.Value);
+    }
+}
