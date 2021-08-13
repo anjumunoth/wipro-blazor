@@ -1,0 +1,10 @@
+Assignment
+
+Employee Component
+
+Display the list of employees : Emp Id, Emp name and salary; Edit button
+
+EditEmployee Component
+3 text boxes  -- edit the row on which the user has clicked on
+
+Confirm button -- click -- changes should be applied in parent Employee component's table
